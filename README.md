@@ -84,8 +84,8 @@ Clopidogrel, Codeine
 ### 1️⃣ Clone Repo
 
 ```
-git clone https://github.com/yourrepo/pharmacogenomic-ai
-cd pharmacogenomic-ai
+git clone https://github.com/1900690105/RIFT-GCOEY
+cd RIFT-GCOEY
 ```
 
 ---
