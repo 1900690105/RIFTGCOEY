@@ -720,47 +720,144 @@ export default function Home() {
 
                           {/* Expandable explanation */}
                           <details className="px-5">
-                            <summary
-                              className={`flex items-center gap-2 py-3 text-sm cursor-pointer select-none list-none ${rc.text}`}
-                            >
-                              <span
-                                className={`inline-flex items-center justify-center w-4.5 h-4.5 rounded border text-[10px] border-current/40 ${rc.text}`}
+                            <div className="px-5">
+                              {/* Risk Assessment */}
+                              <ExpandSection
+                                title="Risk Assessment"
+                                dark={dark}
                               >
-                                ▸
-                              </span>
-                              Clinical Explanation
-                            </summary>
-                            <div className="pb-5 flex flex-col gap-3">
-                              {[
-                                { label: "Summary", val: explain.summary },
-                                { label: "Mechanism", val: explain.mechanism },
-                                {
-                                  label: "Recommendation",
-                                  val: explain.recommendation,
-                                },
-                                {
-                                  label: "Alternatives",
-                                  val: explain.alternatives,
-                                },
-                              ]
-                                .filter((x) => x.val)
-                                .map(({ label, val }) => (
-                                  <div
-                                    key={label}
-                                    className={`rounded-xl border p-3.5 ${dark ? "bg-black/20 border-white/5" : "bg-white/60 border-black/5"}`}
-                                  >
-                                    <p
-                                      className={`text-[10px] uppercase tracking-[0.16em] mb-1.5 ${mutedCls}`}
-                                    >
-                                      {label}
-                                    </p>
-                                    <p
-                                      className={`text-[13px] leading-relaxed m-0 ${dark ? "text-slate-200" : "text-slate-700"}`}
-                                    >
-                                      {val}
-                                    </p>
+                                <div className="grid grid-cols-2 gap-3">
+                                  <Info
+                                    label="Risk Label"
+                                    value={risk.risk_label}
+                                  />
+                                  <Info
+                                    label="Severity"
+                                    value={risk.severity}
+                                  />
+                                  <Info
+                                    label="Confidence"
+                                    value={risk.confidence_score}
+                                  />
+                                </div>
+                              </ExpandSection>
+
+                              {/* Pharmacogenomic Profile */}
+                              <ExpandSection
+                                title="Pharmacogenomic Profile"
+                                dark={dark}
+                              >
+                                <div className="grid grid-cols-2 gap-3">
+                                  <Info
+                                    label="Primary Gene"
+                                    value={profile.primary_gene}
+                                  />
+                                  <Info
+                                    label="Diplotype"
+                                    value={profile.diplotype}
+                                  />
+                                  <Info
+                                    label="Phenotype"
+                                    value={profile.phenotype}
+                                  />
+                                </div>
+                              </ExpandSection>
+
+                              {/* Variants */}
+                              {profile.detected_variants?.length > 0 && (
+                                <ExpandSection
+                                  title="Detected Variants"
+                                  dark={dark}
+                                >
+                                  <div className="space-y-2">
+                                    {profile.detected_variants.map((v, idx) => (
+                                      <div
+                                        key={idx}
+                                        className="rounded-lg border border-white/10 p-3"
+                                      >
+                                        <p>
+                                          <b>Gene:</b> {v.gene}
+                                        </p>
+                                        <p>
+                                          <b>Allele:</b> {v.star}
+                                        </p>
+                                        <p>
+                                          <b>RSID:</b> {v.rsid}
+                                        </p>
+                                        <p>
+                                          <b>Position:</b> {v.chrom}:{v.pos}
+                                        </p>
+                                      </div>
+                                    ))}
                                   </div>
-                                ))}
+                                </ExpandSection>
+                              )}
+
+                              {/* Clinical Recommendation */}
+                              <ExpandSection
+                                title="Clinical Recommendation"
+                                dark={dark}
+                              >
+                                <p>
+                                  <b>Action:</b>{" "}
+                                  {
+                                    r.clinical_recommendation
+                                      ?.prescribing_action
+                                  }
+                                </p>
+                                <p>
+                                  <b>Monitoring:</b>{" "}
+                                  {r.clinical_recommendation?.monitoring}
+                                </p>
+                                <p>
+                                  <b>Alternative:</b>{" "}
+                                  {
+                                    r.clinical_recommendation
+                                      ?.alternative_therapy
+                                  }
+                                </p>
+                              </ExpandSection>
+
+                              {/* AI Clinical Explanation */}
+                              <ExpandSection
+                                title="AI Clinical Explanation"
+                                dark={dark}
+                              >
+                                <p>
+                                  <b>Summary:</b> {explain.summary}
+                                </p>
+                                <p>
+                                  <b>Mechanism:</b> {explain.mechanism}
+                                </p>
+                                <p>
+                                  <b>Clinical Impact:</b>{" "}
+                                  {explain.clinical_impact}
+                                </p>
+                                <p>
+                                  <b>Recommendation:</b>{" "}
+                                  {explain.recommendation}
+                                </p>
+                                <p>
+                                  <b>Evidence:</b> {explain.evidence_level}
+                                </p>
+                              </ExpandSection>
+
+                              {/* Quality Metrics */}
+                              <ExpandSection
+                                title="Quality Metrics"
+                                dark={dark}
+                              >
+                                <p>
+                                  VCF Parsed:{" "}
+                                  {String(
+                                    r.quality_metrics?.vcf_parsing_success,
+                                  )}
+                                </p>
+                                <p>
+                                  Gene Detected:{" "}
+                                  {String(r.quality_metrics?.gene_detected)}
+                                </p>
+                              </ExpandSection>
                             </div>
                           </details>
                         </div>
@@ -899,5 +996,36 @@ function StepLabel({ num, label, dark, accentCls, borderCls, mutedCls }) {
         className={`flex-1 h-px ${dark ? "bg-slate-800" : "bg-slate-200"}`}
       />
     </div>
+  );
+}
+
+function Info({ label, value }) {
+  return (
+    <div className="rounded-lg border border-white/10 p-2.5">
+      <p className="text-[10px] uppercase opacity-60">{label}</p>
+      <p className="font-semibold">{value ?? "—"}</p>
+    </div>
+  );
+}
+
+function ExpandSection({ title, children, dark }) {
+  return (
+    <details className="group border-b border-white/5 last:border-none">
+      <summary className="flex items-center justify-between py-3 cursor-pointer select-none">
+        <span className="text-sm font-semibold tracking-wide">{title}</span>
+
+        <span className="transition-transform duration-200 group-open:rotate-90">
+          ▶
+        </span>
+      </summary>
+
+      <div
+        className={`pb-4 text-sm leading-relaxed ${
+          dark ? "text-slate-300" : "text-slate-700"
+        }`}
+      >
+        {children}
+      </div>
+    </details>
   );
 }

@@ -5,10 +5,13 @@ export async function POST(req) {
     const formData = await req.formData();
 
     // Send to Python engine
-    const backendRes = await fetch("http://127.0.0.1:8000/drug-risk", {
-      method: "POST",
-      body: formData,
-    });
+    const backendRes = await fetch(
+      "https://rift-gcoey-backend.onrender.com/drug-risk",
+      {
+        method: "POST",
+        body: formData,
+      },
+    );
 
     const pgx = await backendRes.json();
 

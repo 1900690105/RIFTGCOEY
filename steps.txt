@@ -1,0 +1,123 @@
+PharmacogenomicAI — Project Setup & Run Guide
+(Next.js Frontend + Python Genomic Engine)
+
+1. Requirements
+
+Install the following before running the project:
+Node.js >= 18
+Python >= 3.10
+pip
+Git
+
+(Optional but recommended)
+
+virtualenv (Python environment)
+
+===============================
+
+2. Clone Project
+git clone https://github.com/1900690105/RIFT-GCOEY.git
+cd RIFT-GCOEY
+
+===============================
+
+3. Frontend Setup (Next.js)
+Install dependencies:
+npm install
+
+Run frontend:
+npm run dev
+
+Frontend will start at:
+http://localhost:3000
+
+===============================
+
+4. Python Genomic Engine Setup
+The pharmacogenomic analysis engine is inside:
+src/app/engine
+
+Step 1 — Navigate to engine
+cd src/app/engine
+Step 2 — Create virtual environment
+
+Windows:
+python -m venv venv
+venv\Scripts\activate
+
+Mac/Linux:
+python3 -m venv venv
+source venv/bin/activate
+
+Step 3 — Install dependencies
+pip install -r requirements.txt
+
+===============================
+
+5. Run the AI Engine
+Start the python server:
+python main.py
+
+Engine will start at:
+http://localhost:8000
+
+===============================
+
+6. How System Works
+User uploads VCF genomic file in browser
+Next.js sends file to /api/analyze
+API forwards request to Python engine
+Python parses variants (GENE, STAR, RS)
+Drug-gene interaction is calculated
+Gemini LLM generates clinical explanation
+Result displayed + voice doctor assistant
+
+===============================
+
+7. Input Rules
+VCF File:
+Format: .vcf (v4.2)
+Size: max 5MB
+Required INFO fields:
+GENE
+STAR
+RS
+Drug Input:
+Supported:
+CODEINE
+WARFARIN
+CLOPIDOGREL
+SIMVASTATIN
+AZATHIOPRINE
+FLUOROURACIL
+
+Multiple drugs allowed (comma separated).
+
+===============================
+
+8. Features
+Genomic drug response prediction
+CPIC-based recommendation
+AI clinical explanation
+Doctor voice assistant
+Ask questions via mic or text
+Download JSON report
+
+9. Troubleshooting
+Python not detected
+Use python3 instead of python
+Port already in use
+Change ports:
+Next.js → 3001
+Python → 8001
+No voice
+Use Chrome browser (SpeechSynthesis supported)
+
+===============================
+
+10. Stop Servers
+Press:
+CTRL + C
+
+
+in both terminals.
