@@ -1,288 +1,540 @@
-🧬 PharmacogenomicAI — AI Clinical Pharmacogenomics Decision Support
+# 🧬 PharmacogenomicAI — AI Clinical Pharmacogenomics Decision Support
 
-Healthcare should not be trial-and-error.
-PharmacogenomicAI predicts drug effectiveness before prescription using genomics + AI.
+> **Healthcare should not be trial-and-error.**  
+> PharmacogenomicAI predicts drug effectiveness **before prescription** using genomics + AI.
 
-PharmacogenomicAI is an AI-powered clinical assistant that analyzes patient genetic variants from a VCF file and predicts drug response risk using CPIC pharmacogenomic guidelines and LLM medical reasoning.
+[![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![FastAPI](https://img.shields.io/badge/Backend-FastAPI-009688?logo=fastapi)](https://fastapi.tiangolo.com/)
+[![Next.js](https://img.shields.io/badge/Frontend-Next.js-black?logo=next.js)](https://nextjs.org/)
+[![CPIC](https://img.shields.io/badge/Guidelines-CPIC-blue)](https://cpicpgx.org/)
+[![Live Demo](https://img.shields.io/badge/Demo-Live-brightgreen)](https://riftgcoey.vercel.app/)
 
-🎯 Problem
+---
+
+## 📋 Table of Contents
+
+- [Problem](#-problem)
+- [Solution](#-solution)
+- [Live Demo](#-live-demo)
+- [Core Capabilities](#-core-capabilities)
+- [System Architecture](#️-system-architecture)
+- [Supported Genes & Drugs](#-supported-pharmacogenomic-genes)
+- [Input Requirements](#-input-requirements)
+- [Example Clinical Output](#-example-clinical-output)
+- [Doctor AI Assistant](#-doctor-ai-assistant)
+- [Dashboards](#-dashboards)
+- [JSON Report Export](#-json-clinical-report-export)
+- [Tech Stack](#️-tech-stack)
+- [Installation](#️-installation)
+- [Environment Variables](#-environment-variables)
+- [API Reference](#-api-reference)
+- [Testing](#-testing)
+- [Validation Rules](#️-validation-rules)
+- [Deployment](#-deployment)
+- [Contributing](#-contributing)
+- [Future Scope](#-future-scope)
+- [Clinical Disclaimer](#️-clinical-disclaimer)
+- [Team](#-team)
+- [License](#-license)
+
+---
+
+## 🎯 Problem
 
 Patients often receive the correct medication but experience:
 
-Treatment failure
+- ❌ **Treatment failure** — drug has no effect
+- ☠️ **Drug toxicity** — severe adverse reactions
+- 🩸 **Severe bleeding** — incorrect anticoagulant dosing
+- 💔 **Stent thrombosis** — antiplatelet therapy failure
 
-Drug toxicity
+**Root cause:** Genes control drug metabolism, yet doctors currently prescribe drugs **without genetic context**.
 
-Severe bleeding
+---
 
-Stent thrombosis
+## 💡 Solution
 
-Because genes control drug metabolism.
+PharmacogenomicAI provides **pre-prescription genomic drug validation**.
 
-Doctors currently prescribe drugs without genetic context.
+```
+Upload patient genomic data → AI predicts drug response → Doctor chooses safest therapy
+```
 
-💡 Solution
+By combining **CPIC pharmacogenomic guidelines** with **LLM medical reasoning**, our system gives clinicians actionable, evidence-backed guidance before the first prescription is written.
 
-PharmacogenomicAI provides pre-prescription genomic drug validation.
+---
 
-Upload patient genomic data → AI predicts drug response → Doctor chooses safest therapy.
+## 🚀 Live Demo
 
-🧠 Core Capabilities
-Genomic Analysis
+| Resource | Link |
+|----------|------|
+| 🌐 Frontend App | [riftgcoey.vercel.app](https://riftgcoey.vercel.app/) |
+| ⚙️ Backend API | [rift-gcoey-backend-1.onrender.com](https://rift-gcoey-backend-1.onrender.com) |
+| 🎥 Demo Video | [Watch on Google Drive](https://drive.google.com/file/d/1wZJh5rjnUJr9QhR9kn2JR5dkrnhkCgeX/view?usp=sharing) |
 
-Parses VCF v4.2 files
+---
 
-Detects pharmacogenomic star alleles
+## 🧠 Core Capabilities
 
-Generates diplotype & phenotype
+### 🔬 Genomic Analysis
+- Parses **VCF v4.2** files
+- Detects **pharmacogenomic star alleles**
+- Generates **diplotype & phenotype**
+- **CPIC-based risk classification**
 
-CPIC-based risk classification
+### 🤖 AI Clinical Reasoning
+- Medical explanation generation
+- Drug mechanism interpretation
+- Alternative therapy suggestion
+- Evidence-level citation (CPIC 1A–3)
 
-AI Clinical Reasoning
+### 👨‍⚕️ Doctor Assistant
+- **Voice + Text** chatbot interface
+- Ask follow-up questions about reports
+- Context-aware patient consultation
+- Animated medical avatar
 
-Medical explanation generation
+### 📊 Clinical Dashboard
+- Doctor & patient report dashboards
+- Expandable clinical explanation sections
+- Downloadable structured JSON report
 
-Mechanism interpretation
+---
 
-Alternative therapy suggestion
+## 🏗️ System Architecture
 
-Doctor Assistant
-
-Voice + Text chatbot
-
-Ask follow-up questions about report
-
-Context-aware patient consultation
-
-Clinical Dashboard
-
-Doctor dashboard
-
-Patient report dashboard
-
-Expandable clinical explanation sections
-
-Downloadable structured JSON report
-
-🏗️ System Architecture
-Patient VCF
-    ↓
+```
+Patient VCF File
+      ↓
 VCF Parser (FastAPI Engine)
-    ↓
+      ↓
 Gene Variant Detection
-    ↓
+      ↓
 CPIC Rule Engine
-    ↓
+      ↓
 Risk Classification
-    ↓
+      ↓
 Gemini AI Clinical Explanation
-    ↓
+      ↓
 Doctor Dashboard + Voice Assistant
-🧬 Supported Pharmacogenomic Genes
-Gene	Function
-CYP2C19	Antiplatelet metabolism
-CYP2C9	Warfarin metabolism
-CYP2D6	Opioid metabolism
-SLCO1B1	Statin transport
-TPMT	Thiopurine toxicity
-DPYD	Chemotherapy toxicity
-💊 Supported Drugs
-Drug	Gene	Risk Example
-CLOPIDOGREL	CYP2C19	Ineffective in Poor Metabolizers
-WARFARIN	CYP2C9	Bleeding risk / dose change
-CODEINE	CYP2D6	Toxic or no effect
-SIMVASTATIN	SLCO1B1	Myopathy risk
-AZATHIOPRINE	TPMT	Severe toxicity
-FLUOROURACIL	DPYD	Life-threatening toxicity
-📁 Input Requirements
-1️⃣ VCF File
+```
 
-Format: VCF v4.2
+---
 
-Max size: 5 MB
+## 🧬 Supported Pharmacogenomic Genes
 
-Required INFO tags:
+| Gene | Function | Key Metabolizer Types |
+|------|----------|-----------------------|
+| **CYP2C19** | Antiplatelet metabolism | Poor / Ultrarapid |
+| **CYP2C9** | Warfarin metabolism | Poor / Intermediate |
+| **CYP2D6** | Opioid metabolism | Poor / Ultrarapid |
+| **SLCO1B1** | Statin transport | Normal / Decreased |
+| **TPMT** | Thiopurine toxicity | Poor / Intermediate |
+| **DPYD** | Chemotherapy toxicity | Poor / Intermediate |
 
-GENE
-STAR
-RS
+---
 
-Example:
+## 💊 Supported Drugs
 
-chr10 96541616 rs4244285 G A . . GENE=CYP2C19;STAR=*2;RS=rs4244285
-2️⃣ Drug Input
+| Drug | Gene | Risk Example |
+|------|------|--------------|
+| **CLOPIDOGREL** | CYP2C19 | Ineffective in Poor Metabolizers |
+| **WARFARIN** | CYP2C9 | Bleeding risk / dose adjustment required |
+| **CODEINE** | CYP2D6 | Toxic in Ultrarapid / No effect in Poor |
+| **SIMVASTATIN** | SLCO1B1 | Myopathy risk at standard doses |
+| **AZATHIOPRINE** | TPMT | Severe bone marrow toxicity |
+| **FLUOROURACIL** | DPYD | Life-threatening toxicity |
 
-Supports single OR multiple drugs
+---
 
+## 📁 Input Requirements
+
+### 1️⃣ VCF File
+
+| Property | Requirement |
+|----------|-------------|
+| Format | VCF v4.2 |
+| Max Size | 5 MB |
+| Required INFO tags | `GENE`, `STAR`, `RS` |
+
+**Example VCF entry:**
+```vcf
+##fileformat=VCFv4.2
+#CHROM  POS       ID          REF  ALT  QUAL  FILTER  INFO
+chr10   96541616  rs4244285   G    A    .     .       GENE=CYP2C19;STAR=*2;RS=rs4244285
+chr10   96522463  rs4986893   G    A    .     .       GENE=CYP2C19;STAR=*3;RS=rs4986893
+```
+
+### 2️⃣ Drug Input
+
+Supports **single OR multiple** drug queries:
+
+```
+# Single drug
 Warfarin
-Clopidogrel, Codeine
-🧪 Example Clinical Output
-Phenotype: CYP2C19 Poor Metabolizer
-Risk: Ineffective
+
+# Multiple drugs (comma-separated)
+Clopidogrel, Codeine, Warfarin
+```
+
+---
+
+## 🧪 Example Clinical Output
+
+```
+Patient ID    : PT-2024-001
+Gene          : CYP2C19
+Diplotype     : *2/*3
+Phenotype     : Poor Metabolizer
+Drug          : Clopidogrel
+Risk Level    : HIGH — Ineffective
 Recommendation: Avoid Clopidogrel
-Alternative: Prasugrel / Ticagrelor
+Alternative   : Prasugrel (10 mg) or Ticagrelor (90 mg BID)
 Evidence Level: CPIC Level 1A
-🎤 Doctor AI Assistant
+Mechanism     : Reduced conversion of clopidogrel to active metabolite
+                due to loss-of-function variants in CYP2C19
+```
 
-Doctor can ask:
+---
 
-Why is drug ineffective?
+## 🎤 Doctor AI Assistant
 
-What mechanism caused this?
+The built-in AI assistant allows doctors to ask natural language follow-up questions:
 
-What alternative drug should be used?
+| Example Questions |
+|-------------------|
+| "Why is this drug ineffective for this patient?" |
+| "What is the mechanism behind this risk?" |
+| "What alternative drug should be prescribed?" |
+| "What monitoring is required during therapy?" |
+| "What dose adjustment is recommended for warfarin?" |
 
-What monitoring is required?
+**Input Methods:**
+- 🎙️ Microphone (Web Speech API)
+- ⌨️ Text input
 
-Supports:
+**Output:**
+- Spoken medical response (TTS)
+- On-screen clinical text
 
-Microphone input
+---
 
-Text input
+## 📊 Dashboards
 
-Spoken medical response
+### 👨‍⚕️ Doctor Dashboard
+- Patient genomic interpretation panel
+- Clinical risk indicator (color-coded)
+- AI-generated explanation sections (expandable)
+- Follow-up Q&A chatbot
 
-📊 Dashboards
-Doctor Dashboard
+### 👤 Patient Dashboard
+- Simplified, plain-language report
+- Risk level understanding
+- Therapy recommendation summary
 
-Patient genomic interpretation
+---
 
-Clinical risk indicator
-
-AI explanation sections
-
-Follow-up Q&A chatbot
-
-Patient Dashboard
-
-Simplified report
-
-Risk understanding
-
-Therapy recommendation
-
-🧾 JSON Clinical Report Export
+## 🧾 JSON Clinical Report Export
 
 One-click downloadable structured report including:
 
-Risk classification
+```json
+{
+  "patient_id": "PT-2024-001",
+  "gene": "CYP2C19",
+  "diplotype": "*2/*3",
+  "phenotype": "Poor Metabolizer",
+  "drug": "Clopidogrel",
+  "risk_level": "HIGH",
+  "recommendation": "Avoid Clopidogrel",
+  "alternatives": ["Prasugrel", "Ticagrelor"],
+  "cpic_evidence_level": "1A",
+  "ai_explanation": "...",
+  "generated_at": "2026-02-20T10:30:00Z"
+}
+```
 
-Diplotype
+---
 
-Phenotype
+## 🏗️ Tech Stack
 
-CPIC recommendation
+| Layer | Technology |
+|-------|-----------|
+| **Frontend** | Next.js 14 (App Router), TailwindCSS, Web Speech API |
+| **Backend** | FastAPI (Python 3.11), Custom VCF Parser, CPIC Rule Engine |
+| **AI Layer** | Google Gemini API (Clinical Reasoning Engine) |
+| **Deployment** | Vercel (Frontend), Render (Backend) |
 
-AI explanation
+---
 
-Evidence level
+## ⚙️ Installation
 
-🏗️ Tech Stack
-Frontend
+### Prerequisites
 
-Next.js (App Router)
+- Node.js >= 18
+- Python >= 3.11
+- A Google Gemini API key
 
-TailwindCSS
+### 1. Clone Repositories
 
-Web Speech API
+```bash
+git clone https://github.com/1900690105/RIFTGCOEY              # Frontend
+git clone https://github.com/1900690105/RIFT-GCOEY-backend     # Backend
+```
 
-Animated Medical Avatar
+### 2. Backend Setup
 
-Backend
+```bash
+cd RIFT-GCOEY-backend/src/app/engine
 
-FastAPI (Python 3.11)
-
-Custom VCF Parser
-
-CPIC Rule Engine
-
-AI Layer
-
-Google Gemini API
-
-Clinical reasoning engine
-
-⚙️ Installation
-Clone Repositories
-git clone [https://github.com/YOUR_USERNAME/PharmacogenomicAI-frontend](https://github.com/1900690105/RIFTGCOEY)
-git clone [https://github.com/YOUR_USERNAME/PharmacogenomicAI-backend](https://github.com/1900690105/RIFT-GCOEY-backend)
-Backend Setup
-cd backend/src/app/engine
+# Create and activate virtual environment
 python -m venv venv
+
+# Windows
 venv\Scripts\activate
+
+# macOS / Linux
+source venv/bin/activate
+
+# Install dependencies
 pip install -r requirements.txt
+
+# Start the development server
 uvicorn main:app --reload --port 8000
-Frontend Setup
-cd frontend
+```
+
+Backend will be available at: `http://localhost:8000`  
+Interactive API docs: `http://localhost:8000/docs`
+
+### 3. Frontend Setup
+
+```bash
+cd RIFTGCOEY
+
+# Install dependencies
 npm install
+
+# Start development server
 npm run dev
+```
 
-App:
+Frontend will be available at: `http://localhost:3000`
 
-http://localhost:3000
-🔐 Environment Variables
+---
 
-Create .env.local
+## 🔐 Environment Variables
 
-GEMINI_API_KEY=YOUR_KEY
+Create a `.env.local` file in the frontend root:
+
+```env
+GEMINI_API_KEY=your_google_gemini_api_key_here
 NEXT_PUBLIC_API=http://localhost:8000
-🔌 API Endpoints
-POST /drug-risk
+```
 
-Single drug analysis
+Create a `.env` file in the backend root:
 
-POST /batch-risk
+```env
+GEMINI_API_KEY=your_google_gemini_api_key_here
+```
 
-Multi drug analysis
+> ⚠️ Never commit API keys to version control. Add `.env` and `.env.local` to your `.gitignore`.
 
-🧪 CURL Example
+---
+
+## 🔌 API Reference
+
+### `POST /drug-risk`
+Analyze a single drug against patient VCF data.
+
+**Request (multipart/form-data):**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `file` | File | Patient VCF file (≤ 5MB) |
+| `drug` | String | Drug name (e.g., `Clopidogrel`) |
+
+**Response:**
+```json
+{
+  "gene": "CYP2C19",
+  "diplotype": "*2/*3",
+  "phenotype": "Poor Metabolizer",
+  "risk_level": "HIGH",
+  "recommendation": "Avoid Clopidogrel",
+  "alternatives": ["Prasugrel", "Ticagrelor"],
+  "evidence_level": "1A",
+  "ai_explanation": "..."
+}
+```
+
+---
+
+### `POST /batch-risk`
+Analyze multiple drugs in a single request.
+
+**Request (multipart/form-data):**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `file` | File | Patient VCF file (≤ 5MB) |
+| `drugs` | String | Comma-separated drug names |
+
+**Response:** Array of drug risk objects (same schema as `/drug-risk`).
+
+---
+
+### cURL Examples
+
+```bash
+# Single drug analysis
 curl -X POST http://localhost:8000/drug-risk \
   -F "file=@patient.vcf" \
   -F "drug=Clopidogrel"
-🛡️ Validation Rules
 
-Reject files > 5MB
+# Multiple drug analysis
+curl -X POST http://localhost:8000/batch-risk \
+  -F "file=@patient.vcf" \
+  -F "drugs=Clopidogrel,Warfarin,Codeine"
+```
 
-Only VCF allowed
+---
 
-Must contain GENE/STAR/RS tags
+## 🧪 Testing
 
-Unsupported drug → graceful response
+### Run Backend Tests
 
-🚀 Deployment
+```bash
+cd RIFT-GCOEY-backend
+pytest tests/ -v
+```
 
-Frontend: ([click here](https://riftgcoey.vercel.app/))
-Backend: ([click here](https://rift-gcoey-backend-1.onrender.com))
-Demo Video: ([click here](https://drive.google.com/file/d/1wZJh5rjnUJr9QhR9kn2JR5dkrnhkCgeX/view?usp=sharing))
+### Sample VCF for Testing
 
-🔮 Future Scope
+A sample VCF file is available at `tests/fixtures/sample_patient.vcf` for local testing.
 
-EHR integration (FHIR)
+### API Health Check
 
-Real patient cohort validation
+```bash
+curl http://localhost:8000/health
+# Expected: {"status": "ok"}
+```
 
-Additional pharmacogenes
+---
 
-Hospital EMR plugin
+## 🛡️ Validation Rules
 
-Mobile app for bedside use
+| Rule | Behavior |
+|------|----------|
+| File size > 5MB | Rejected with error message |
+| Non-VCF file uploaded | Rejected with format error |
+| Missing `GENE`/`STAR`/`RS` tags | Rejected with tag error |
+| Unsupported drug name | Returns graceful "unsupported drug" response |
+| Malformed VCF format | Returns parsing error with line reference |
 
-⚠️ Clinical Disclaimer
+---
 
-For research and educational use only. Not a substitute for licensed medical judgment.
+## 🚀 Deployment
 
-👨‍💻 Team
+### Frontend (Vercel)
 
-Built for RIFT 2026 PharmaGuard Challenge by
-Nikhil kandhare
-Saraswati Adkine
-Anushka V
-Pooja K
+```bash
+# Install Vercel CLI
+npm install -g vercel
+
+# Deploy
+vercel --prod
+```
+
+Set environment variables in the Vercel dashboard under **Settings → Environment Variables**.
+
+### Backend (Render)
+
+1. Connect your GitHub repo to [Render](https://render.com)
+2. Set **Start Command**: `uvicorn main:app --host 0.0.0.0 --port 8000`
+3. Add environment variables in Render dashboard
+4. Deploy
+
+### Docker (Optional)
+
+```bash
+# Backend
+cd RIFT-GCOEY-backend
+docker build -t pharmacogenomicai-backend .
+docker run -p 8000:8000 --env GEMINI_API_KEY=your_key pharmacogenomicai-backend
+```
+
+---
+
+## 🤝 Contributing
+
+We welcome contributions! Here's how to get started:
+
+1. **Fork** the repository
+2. **Create** a feature branch: `git checkout -b feature/add-new-gene`
+3. **Commit** your changes: `git commit -m "feat: add VKORC1 gene support"`
+4. **Push** to the branch: `git push origin feature/add-new-gene`
+5. **Open** a Pull Request
+
+### Contribution Areas
+- Adding new pharmacogenomic genes (e.g., VKORC1, UGT1A1)
+- Expanding supported drug list
+- Improving AI clinical reasoning prompts
+- UI/UX improvements
+- Writing unit and integration tests
+- Documentation improvements
+
+Please read `CONTRIBUTING.md` before submitting a PR.
+
+---
+
+## 🔮 Future Scope
+
+- 🏥 **EHR integration** via HL7 FHIR standard
+- 👥 **Real patient cohort validation** studies
+- 🧬 **Additional pharmacogenes** (VKORC1, UGT1A1, G6PD, HLA-B)
+- 🔌 **Hospital EMR plugin** (Epic, Cerner)
+- 📱 **Mobile app** for bedside clinical use
+- 🌍 **Multi-language support** for global deployment
+- 🔒 **HIPAA-compliant** data storage and audit logs
+- 📈 **Population-level analytics** dashboard
+- 🤝 **Lab integration** for direct genomic data import
+
+---
+
+## ⚠️ Clinical Disclaimer
+
+> **FOR RESEARCH AND EDUCATIONAL USE ONLY.**  
+> PharmacogenomicAI is **not** a licensed medical device and is **not** a substitute for licensed clinical judgment. All recommendations must be reviewed by a qualified healthcare professional before any clinical action is taken. This tool does not establish a doctor-patient relationship and should not be used for direct patient care without appropriate clinical oversight.
+
+---
+
+## 👨‍💻 Team
+
+Built for **RIFT 2026 PharmaGuard Challenge** by:
+
+| Name | Role |
+|------|------|
+| *(Nikhil Kandhare)* | *(Full stack developer)* |
+| *(Saraswati Adkine)* | *(Full stack developer)* |
+| *(Pooja K)* | *(Research)* |
+| *(Anushka V)* | *(Research)* |
+
+---
+
 
 for any query contact
 +91 9112430021
 nikhilkandhare22@gmail.com
 
-📜 License
+## 📜 License
 
-MIT License
+This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
+
+---
+
+<div align="center">
+  <strong>Made with ❤️ for safer, smarter prescribing.</strong><br>
+  <a href="https://riftgcoey.vercel.app/">Live Demo</a> · 
+  <a href="https://github.com/1900690105/RIFTGCOEY/issues">Report Bug</a> · 
+  <a href="https://github.com/1900690105/RIFTGCOEY/issues">Request Feature</a>
+</div>
