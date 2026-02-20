@@ -174,7 +174,7 @@ export default function Home() {
       const res = await fetch("/api/analyze", { method: "POST", body: form });
       const data = await res.json();
       setResult(data);
-      console.log(data);
+
       setSummary(data.llm_generated_explanation.summary);
     } catch {
       setResult({ error: "Analysis failed. Please try again." });

@@ -6,7 +6,7 @@ export async function POST(req) {
 
     // Send to Python engine
     const backendRes = await fetch(
-      "https://rift-gcoey-backend.onrender.com/drug-risk",
+      "https://rift-gcoey-backend-1.onrender.com/drug-risk",
       {
         method: "POST",
         body: formData,
